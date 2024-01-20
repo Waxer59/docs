@@ -36,7 +36,7 @@ interface AstroIntegration {
       injectRoute: ({ pattern: string, entrypoint: string }) => void;
       logger: AstroIntegrationLogger;
     }) => void;
-    'astro:config:done'?: (options: { config: AstroConfig; setAdapter: (adapter: AstroAdapter) => void; logger: AstroIntegrationLogger; }) => void | Promise<void>;
+    'astro:config:done'?: (options: { config: AstroConfig; logger: AstroIntegrationLogger; }) => void | Promise<void>;
     'astro:server:setup'?: (options: { server: vite.ViteDevServer; logger: AstroIntegrationLogger; }) => void | Promise<void>;
     'astro:server:start'?: (options: { address: AddressInfo; logger: AstroIntegrationLogger; }) => void | Promise<void>;
     'astro:server:done'?: (options: { logger: AstroIntegrationLogger; }) => void | Promise<void>;
@@ -219,7 +219,7 @@ declare module 'astro' {
 
 #### Opción `addDevToolbarApp`
 
-<p><Since v="3.4.0" /></p>
+<Since v="3.4.0" />
 
 **Tipo:** `(pluginEntrypoint: string) => void;`
 
@@ -270,7 +270,7 @@ export default {
 
 #### Opción `addMiddleware`
 
-<p><Since v="3.5.0" /></p>
+<Since v="3.5.0" />
 
 **Tipo:** `(middleware:` [`AstroIntegrationMiddleware`](https://github.com/withastro/astro/blob/852ac0f75dfca1b2602e9cdbfa0447d9998e2449/packages/astro/src/%40types/astro.ts#L2124-L2127) `) => void;`
 
@@ -337,6 +337,16 @@ injectRoute({
   pattern: '/fancy-dashboard',
   entrypoint: '@fancy/dashboard/dashboard.astro'
 });
+```
+
+Cuando publiques tu paquete (`@fancy/dashboard`, en este caso) en npm, debes exportar `dashboard.astro` en tu `package.json`:
+
+```json title="package.json" "exports"
+{
+  "name": "@fancy/dashboard",
+  // ...
+  "exports": { "./dashboard.astro": "./dashboard.astro" }`
+}
 ```
 
 #### Opción `injectScript`
